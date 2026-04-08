@@ -1,27 +1,26 @@
 *** Settings ***
-Library    RequestsLibrary
-Library    Collections
+Library    ../EPCTests.py
 
-*** Variables ***
-${BASE_URL}    http://localhost:8000
+*** Keywords ***
+Reset EPC
+    ${status_code}=    Reset Response
+    Should Be Equal As Integers    ${status_code}    200
+
+Attach UE With ID
+    [Arguments]    ${ue_id}
+    ${response}=    Attach UE    ${ue_id}
+    Should Be Equal    ${response["status"]}    attached
+    Should Be Equal As Integers    ${response["ue_id"]}    ${ue_id}
+    RETURN    ${response}
+
+Get UE By ID
+    [Arguments]    ${ue_id}
+    ${response}=    Get UE    ${ue_id}
+    Should Be Equal As Integers    ${response["ue_id"]}    ${ue_id}
+    RETURN    ${response}
 
 *** Test Cases ***
 atttach_to_ue
-    Create Session    epc    ${BASE_URL}
-
-    ${reset_response}=    POST On Session    epc    /reset    expected_status=any
-    Should Be Equal As Integers    ${reset_response.status_code}    200
-
-    ${body}=    Create Dictionary    ue_id=10
-    ${response}=    POST On Session    epc    /ues    json=${body}    expected_status=any
-    Should Be Equal As Integers    ${response.status_code}    200
-
-    ${response_data}=    Evaluate    $response.json()
-    Should Be Equal    ${response_data["status"]}    attached
-    Should Be Equal As Integers    ${response_data["ue_id"]}    10
-
-    ${get_response}=    GET On Session    epc    /ues/10    expected_status=any
-    Should Be Equal As Integers    ${get_response.status_code}    200
-
-    ${get_data}=    Evaluate    $get_response.json()
-    Should Be Equal As Integers    ${get_data["ue_id"]}    10
+    Reset EPC
+    ${attach_response}=    Attach UE With ID    10
+    ${get_response}=    Get UE By ID    10
