@@ -28,3 +28,20 @@ class EPCTests:
         data = response.json()
         ues_list = data["ues"]
         return len(ues_list)
+
+    def add_bearer(self, ue_id, bearer_id):
+        payload = {"bearer_id": bearer_id}
+        response = requests.post(f"{self.base_url}/ues/{ue_id}/bearers", json=payload)
+        response.raise_for_status()
+        return response.json()
+
+    def start_traffic(self, ue_id, bearer_id, protocol, bps=None, kbps=None, mbps=None):
+        payload = {"protocol": protocol}
+        if bps is not None:
+            payload["bps"] = bps
+        if kbps is not None:
+            payload["kbps"] = kbps
+        if mbps is not None:
+            payload["mbps"] = mbps
+        response = requests.post(f"{self.base_url}/ues/{ue_id}/bearers/{bearer_id}/traffic", json=payload)
+        return response
