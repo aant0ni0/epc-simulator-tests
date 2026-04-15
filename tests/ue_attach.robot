@@ -20,7 +20,7 @@ Get UE By ID
     RETURN    ${response}
 
 *** Test Cases ***
-atttach_to_ue
+atttach_ue_with_correct_id
     Reset EPC
     ${attach_response}=    Attach UE With ID    10
     ${get_response}=    Get UE By ID    10

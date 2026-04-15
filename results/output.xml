@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.2 (Python 3.14.0 on win32)" generated="2026-04-15T18:13:43.645913" rpa="false" schemaversion="5">
+<suite id="s1" name="Epc-Simulator-Tests" source="C:\Users\sylwia.lesniak\Desktop\testy\epc-simulator-tests">
+<suite id="s1-s1" name="Tests" source="C:\Users\sylwia.lesniak\Desktop\testy\epc-simulator-tests\tests">
+<suite id="s1-s1-s1" name="Ue Attach" source="C:\Users\sylwia.lesniak\Desktop\testy\epc-simulator-tests\tests\ue_attach.robot">
+<test id="s1-s1-s1-t1" name="atttach_ue_with_correct_id" line="23">
+<kw name="Reset EPC">
+<kw name="Reset Response" owner="EPCTests">
+<msg time="2026-04-15T18:13:43.785906" level="INFO">${status_code} = 200</msg>
+<var>${status_code}</var>
+<status status="PASS" start="2026-04-15T18:13:43.773659" elapsed="0.012807"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-15T18:13:43.787135" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-15T18:13:43.786672" elapsed="0.000683"/>
+</kw>
+<status status="PASS" start="2026-04-15T18:13:43.773175" elapsed="0.014298"/>
+</kw>
+<kw name="Attach UE With ID">
+<kw name="Attach Ue" owner="EPCTests">
+<msg time="2026-04-15T18:13:43.795835" level="INFO">${response} = {'status': 'attached', 'ue_id': 10}</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<status status="PASS" start="2026-04-15T18:13:43.788108" elapsed="0.007944"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${response["status"]}</arg>
+<arg>attached</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-04-15T18:13:43.796220" elapsed="0.000786"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-15T18:13:43.797768" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response["ue_id"]}</arg>
+<arg>${ue_id}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-15T18:13:43.797161" elapsed="0.000754"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-04-15T18:13:43.797999" elapsed="0.000192"/>
+</return>
+<msg time="2026-04-15T18:13:43.798355" level="INFO">${attach_response} = {'status': 'attached', 'ue_id': 10}</msg>
+<var>${attach_response}</var>
+<arg>10</arg>
+<status status="PASS" start="2026-04-15T18:13:43.787796" elapsed="0.010734"/>
+</kw>
+<kw name="Get UE By ID">
+<kw name="Get Ue" owner="EPCTests">
+<msg time="2026-04-15T18:13:43.803937" level="INFO">${response} = {'ue_id': 10, 'bearers': {'9': {'bearer_id': 9, 'protocol': None, 'target_bps': None, 'active': False}}, 'stats': {}}</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<status status="PASS" start="2026-04-15T18:13:43.799126" elapsed="0.005101"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-15T18:13:43.805167" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response["ue_id"]}</arg>
+<arg>${ue_id}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-15T18:13:43.804439" elapsed="0.000898"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-04-15T18:13:43.805437" elapsed="0.000175"/>
+</return>
+<msg time="2026-04-15T18:13:43.805789" level="INFO">${get_response} = {'ue_id': 10, 'bearers': {'9': {'bearer_id': 9, 'protocol': None, 'target_bps': None, 'active': False}}, 'stats': {}}</msg>
+<var>${get_response}</var>
+<arg>10</arg>
+<status status="PASS" start="2026-04-15T18:13:43.798865" elapsed="0.007064"/>
+</kw>
+<status status="PASS" start="2026-04-15T18:13:43.771027" elapsed="0.035161"/>
+</test>
+<status status="PASS" start="2026-04-15T18:13:43.686638" elapsed="0.121953"/>
+</suite>
+<status status="PASS" start="2026-04-15T18:13:43.680012" elapsed="0.130798"/>
+</suite>
+<status status="PASS" start="2026-04-15T18:13:43.650245" elapsed="0.162548"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Epc-Simulator-Tests" id="s1" pass="1" fail="0" skip="0">Epc-Simulator-Tests</stat>
+<stat name="Tests" id="s1-s1" pass="1" fail="0" skip="0">Epc-Simulator-Tests.Tests</stat>
+<stat name="Ue Attach" id="s1-s1-s1" pass="1" fail="0" skip="0">Epc-Simulator-Tests.Tests.Ue Attach</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
