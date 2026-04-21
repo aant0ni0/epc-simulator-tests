@@ -1,5 +1,7 @@
 import requests
 import json
+import time
+from robot.api import logger
 
 class EPCTests:
     ROBOT_LIBRARY_SCOPE = "TEST"
@@ -48,12 +50,55 @@ class EPCTests:
     def start_traffic(self, ue_id, bearer_id, protocol, bps=None, kbps=None, mbps=None):
         payload = {"protocol": protocol}
         if bps is not None:
-            payload["bps"] = bps
+            payload["bps"] = float(bps)
         if kbps is not None:
-            payload["kbps"] = kbps
+            payload["kbps"] = float(kbps)
         if mbps is not None:
-            payload["mbps"] = mbps
-        response = requests.post(
-            f"{self.base_url}/ues/{ue_id}/bearers/{bearer_id}/traffic", json=payload
-        )
+            payload["Mbps"] = float(mbps)
+
+        url = f"{self.base_url}/ues/{ue_id}/bearers/{bearer_id}/traffic"
+        logger.info(f"URL: {url}")
+        logger.info(f"Payload: {payload}")
+        response = requests.post(url, json=payload)
+        logger.info(f"Status: {response.status_code}")
+        logger.info(f"Response body: {response.text}")
         return response
+
+    def get_ues_stats(self, ue_id):
+        response = requests.get(f"{self.base_url}/ues/stats?ue_id={ue_id}")
+        response.raise_for_status()
+        return response.json()
+
+    def wait_until_traffic_stabilizes(
+            self,
+            ue_id: int,
+            expected_bps: float,
+            margin_percent: float = 15.0,
+            required_stable: int = 3,
+            interval: float = 1.0,
+            timeout: float = 30.0
+    ) -> float:
+        lower = expected_bps * (1 - margin_percent / 100)
+        upper = expected_bps * (1 + margin_percent / 100)
+        stable_count = 0
+        elapsed = 0.0
+
+        while elapsed < timeout:
+            stats = self.get_ues_stats(ue_id)
+            actual_bps = stats["total_rx_bps"]
+
+            if lower <= actual_bps <= upper:
+                stable_count += 1
+                if stable_count >= required_stable:
+                    return actual_bps
+            else:
+                stable_count = 0
+
+            time.sleep(interval)
+            elapsed += interval
+
+        raise AssertionError(
+            f"Transfer nie ustabilizował się w ciągu {timeout}s. "
+            f"Ostatni odczyt: {actual_bps} bps, "
+            f"oczekiwany przedział: {lower:.0f} - {upper:.0f} bps"
+        )
