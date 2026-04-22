@@ -30,6 +30,29 @@ default_bearer_exists
 03_delete_default_bearer
     Verify If Deleting Default Bearer 9 From UE ${UE_ID} Is Rejected
 
+add duplicate bearer is rejected
+    Add Bearer 1 To UE ${UE_ID}
+    Verify If Adding Bearer 1 To UE ${UE_ID} Is Rejected
+
+add all bearers 1 to 8
+    [Setup]    Prepare Clean EPC With Attached UE ${UE_ID}
+    Add Bearer 1 To UE ${UE_ID}
+    Add Bearer 2 To UE ${UE_ID}
+    Add Bearer 3 To UE ${UE_ID}
+    Add Bearer 4 To UE ${UE_ID}
+    Add Bearer 5 To UE ${UE_ID}
+    Add Bearer 6 To UE ${UE_ID}
+    Add Bearer 7 To UE ${UE_ID}
+    Add Bearer 8 To UE ${UE_ID}
+    Verify If UE ${UE_ID} Has Bearer 1 Attached
+    Verify If UE ${UE_ID} Has Bearer 2 Attached
+    Verify If UE ${UE_ID} Has Bearer 3 Attached
+    Verify If UE ${UE_ID} Has Bearer 4 Attached
+    Verify If UE ${UE_ID} Has Bearer 5 Attached
+    Verify If UE ${UE_ID} Has Bearer 6 Attached
+    Verify If UE ${UE_ID} Has Bearer 7 Attached
+    Verify If UE ${UE_ID} Has Bearer 8 Attached
+
 *** Keywords ***
 Prepare Clean EPC With Attached UE ${ue_id}
     Reset EPC
@@ -54,7 +77,7 @@ Add Bearer ${bearer_id} To UE ${ue_id}
 
 Verify If Adding Bearer ${bearer_id} To UE ${ue_id} Is Rejected
     ${status_code}=    Add Bearer Without Raise    ${ue_id}    ${bearer_id}
-    Should Be Equal As Integers    ${status_code}    422
+    Should Be Equal As Integers    ${status_code}    400
 
 Delete Bearer ${bearer_id} From UE ${ue_id}
     ${status_code}=    Delete Bearer    ${ue_id}    ${bearer_id}
@@ -67,3 +90,4 @@ Verify If Deleting Nonexisting Bearer ${bearer_id} From UE ${ue_id} Is Rejected
 Verify If Deleting Default Bearer ${bearer_id} From UE ${ue_id} Is Rejected
     ${status_code}=    Delete Bearer    ${ue_id}    ${bearer_id}
     Should Be Equal As Integers    ${status_code}    400
+
