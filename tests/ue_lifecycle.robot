@@ -16,22 +16,16 @@ UL01 - attach UE and verify it appears in list
 
 UL02 - detach UE and verify it disappears
     Attach UE With ID    5
-    ${response}=    Detach UE    5
-    Should Be Equal    ${response}[status]    detached
-    Should Be Equal As Integers    ${response}[ue_id]    5
-    ${status_code}=    Get UE Without Raise    5
-    Should Be Equal As Integers    ${status_code}    400
+    Detach UE With ID    5
+    Verify If UE 5 Is Not Found
 
 UL03 - attaching already attached UE is rejected
     Attach UE With ID    5
-    ${status_code}=    Attach UE Without Raise    5
-    Should Be Equal As Integers    ${status_code}    400
+    Verify If Attaching UE 5 Again Is Rejected
 
 UL04 - attaching UE with out-of-range ID is rejected
-    ${status_code}=    Attach UE Without Raise    0
-    Should Be Equal As Integers    ${status_code}    422
-    ${status_code}=    Attach UE Without Raise    101
-    Should Be Equal As Integers    ${status_code}    422
+    Verify If Attaching UE With Invalid ID 0 Is Rejected
+    Verify If Attaching UE With Invalid ID 101 Is Rejected
 
 *** Keywords ***
 Reset EPC
@@ -42,3 +36,20 @@ Attach UE With ID    [Arguments]    ${ue_id}
     ${response}=    Attach UE    ${ue_id}
     Should Be Equal    ${response}[status]    attached
     Should Be Equal As Integers    ${response}[ue_id]    ${ue_id}
+
+Detach UE With ID    [Arguments]    ${ue_id}
+    ${response}=    Detach UE    ${ue_id}
+    Should Be Equal    ${response}[status]    detached
+    Should Be Equal As Integers    ${response}[ue_id]    ${ue_id}
+
+Verify If UE ${ue_id} Is Not Found
+    ${status_code}=    Get UE Without Raise    ${ue_id}
+    Should Be Equal As Integers    ${status_code}    400
+
+Verify If Attaching UE ${ue_id} Again Is Rejected
+    ${status_code}=    Attach UE Without Raise    ${ue_id}
+    Should Be Equal As Integers    ${status_code}    400
+
+Verify If Attaching UE With Invalid ID ${ue_id} Is Rejected
+    ${status_code}=    Attach UE Without Raise    ${ue_id}
+    Should Be Equal As Integers    ${status_code}    422

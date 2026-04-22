@@ -82,6 +82,23 @@ class EPCTests:
         logger.info(f"Response body: {response.text}")
         return response
 
+    def stop_traffic(self, ue_id, bearer_id):
+        response = requests.delete(f"{self.base_url}/ues/{ue_id}/bearers/{bearer_id}/traffic")
+        response.raise_for_status()
+        return response.json()
+
+    def get_traffic_stats(self, ue_id, bearer_id):
+        response = requests.get(f"{self.base_url}/ues/{ue_id}/bearers/{bearer_id}/traffic")
+        response.raise_for_status()
+        return response.json()
+
+    def start_traffic_without_raise(self, ue_id, bearer_id, protocol, mbps=None):
+        payload = {"protocol": protocol}
+        if mbps is not None:
+            payload["Mbps"] = float(mbps)
+        response = requests.post(f"{self.base_url}/ues/{ue_id}/bearers/{bearer_id}/traffic", json=payload)
+        return response.status_code
+
     def get_ues_stats(self, ue_id):
         response = requests.get(f"{self.base_url}/ues/stats?ue_id={ue_id}")
         response.raise_for_status()
