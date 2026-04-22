@@ -104,6 +104,16 @@ class EPCTests:
         response.raise_for_status()
         return response.json()
 
+    def get_global_stats(self):
+        response = requests.get(f"{self.base_url}/ues/stats")
+        response.raise_for_status()
+        return response.json()
+
+    def get_ue_stats_with_details(self, ue_id):
+        response = requests.get(f"{self.base_url}/ues/stats?ue_id={ue_id}&include_details=true")
+        response.raise_for_status()
+        return response.json()
+
     def wait_until_traffic_stabilizes(
             self,
             ue_id: int,

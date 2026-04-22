@@ -27,6 +27,12 @@ TLC03 - starting traffic twice on same bearer is rejected
 TLC04 - starting traffic on non-existing UE is rejected
     Verify If Starting Traffic On UE 99 Bearer 9 With 10 Mbps Protocol udp Is Rejected
 
+TLC05 - starting traffic on non-existing bearer is rejected
+    Verify If Starting Traffic On UE 1 Bearer 3 With 10 Mbps Protocol udp Is Rejected
+
+TLC06 - starting traffic with zero speed is rejected
+    Verify If Starting Traffic On UE 1 Bearer 9 With 0 Mbps Protocol udp Is Rejected
+
 *** Keywords ***
 Prepare Clean EPC
     Reset EPC

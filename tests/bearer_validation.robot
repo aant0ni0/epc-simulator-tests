@@ -20,6 +20,12 @@ default_bearer_exists
 03_add_bearer_with_id_0
     Verify If Adding Bearer 0 To UE ${UE_ID} Is Rejected
 
+04_add_bearer_9_that_already_exists
+    Verify If Adding Duplicate Bearer 9 To UE ${UE_ID} Is Rejected
+
+05_add_bearer_to_not_attached_ue
+    Verify If Adding Bearer 1 To Not Attached UE 99 Is Rejected
+
 01_delete_existing_bearer
     Verify If UE ${UE_ID} Has Bearer 1 Attached
     Delete Bearer 1 From UE ${UE_ID}
@@ -29,6 +35,12 @@ default_bearer_exists
 
 03_delete_default_bearer
     Verify If Deleting Default Bearer 9 From UE ${UE_ID} Is Rejected
+
+04_delete_bearer_with_id_below_range
+    Verify If Deleting Out Of Range Bearer 0 From UE ${UE_ID} Is Rejected
+
+05_delete_bearer_with_id_above_range
+    Verify If Deleting Out Of Range Bearer 10 From UE ${UE_ID} Is Rejected
 
 add duplicate bearer is rejected
     Add Bearer 1 To UE ${UE_ID}
@@ -52,6 +64,8 @@ add all bearers 1 to 8
     Verify If UE ${UE_ID} Has Bearer 6 Attached
     Verify If UE ${UE_ID} Has Bearer 7 Attached
     Verify If UE ${UE_ID} Has Bearer 8 Attached
+    
+
 
 *** Keywords ***
 Prepare Clean EPC With Attached UE ${ue_id}
@@ -91,3 +105,14 @@ Verify If Deleting Default Bearer ${bearer_id} From UE ${ue_id} Is Rejected
     ${status_code}=    Delete Bearer    ${ue_id}    ${bearer_id}
     Should Be Equal As Integers    ${status_code}    400
 
+Verify If Adding Duplicate Bearer ${bearer_id} To UE ${ue_id} Is Rejected
+    ${status_code}=    Add Bearer Without Raise    ${ue_id}    ${bearer_id}
+    Should Be Equal As Integers    ${status_code}    400
+
+Verify If Adding Bearer ${bearer_id} To Not Attached UE ${ue_id} Is Rejected
+    ${status_code}=    Add Bearer Without Raise    ${ue_id}    ${bearer_id}
+    Should Be Equal As Integers    ${status_code}    400
+
+Verify If Deleting Out Of Range Bearer ${bearer_id} From UE ${ue_id} Is Rejected
+    ${status_code}=    Delete Bearer    ${ue_id}    ${bearer_id}
+    Should Be Equal As Integers    ${status_code}    400
