@@ -20,10 +20,28 @@ class EPCTests:
         response.raise_for_status()
         return response.json()
 
+    def attach_ue_without_raise(self, ue_id):
+        payload = {"ue_id": ue_id}
+        response = requests.post(f"{self.base_url}/ues", json=payload)
+        return response.status_code
+
+    def detach_ue(self, ue_id):
+        response = requests.delete(f"{self.base_url}/ues/{ue_id}")
+        response.raise_for_status()
+        return response.json()
+
+    def detach_ue_without_raise(self, ue_id):
+        response = requests.delete(f"{self.base_url}/ues/{ue_id}")
+        return response.status_code
+
     def get_ue(self, ue_id):
         response = requests.get(f"{self.base_url}/ues/{ue_id}")
         response.raise_for_status()
         return response.json()
+
+    def get_ue_without_raise(self, ue_id):
+        response = requests.get(f"{self.base_url}/ues/{ue_id}")
+        return response.status_code
 
     def get_ues_length(self):
         response = requests.get(f"{self.base_url}/ues")
