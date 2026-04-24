@@ -2,19 +2,15 @@
 Library           ../EPCTests.py
 Library           Collections
 
-Test Setup        Prepare Clean EPC With Attached UE 1
 Suite Teardown    Reset EPC
-
-*** Variables ***
-${UE_ID}          1
-${BEARER_ID}      9
-${TRAFFIC_MBPS}   10
 
 *** Test Cases ***
 ST01 - ue count in global stats reflects number of attached UEs
+    [Setup]    Prepare Clean EPC With Attached UE 1
     Verify Global UE Count Is 1
 
 ST02 - bearer count in global stats reflects number of bearers with active traffic
+    [Setup]    Prepare Clean EPC With Attached UE 1
     Add Bearer 1 To UE 1
     Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp
     Start Traffic On UE 1 Bearer 1 With 10 Mbps Protocol udp
@@ -22,25 +18,28 @@ ST02 - bearer count in global stats reflects number of bearers with active traff
     Verify Global Bearer Count Is 2
 
 ST03 - total tx bps in global stats reflects active traffic
+    [Setup]    Prepare Clean EPC With Attached UE 1
     Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp
     Sleep    2s
     Verify Global Traffic Is Active
 
 ST04 - stats with include details contains per bearer breakdown
+    [Setup]    Prepare Clean EPC With Attached UE 1
     Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp
     Sleep    2s
     Verify Stats With Details For UE 1 Contains Bearer 9
 
 ST05 - traffic stats protocol field matches protocol used to start traffic
+    [Setup]    Prepare Clean EPC With Attached UE 1
     Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol tcp
     Sleep    2s
     Verify Traffic Stats For UE 1 Bearer 9 Protocol Is tcp
 
 ST06 - traffic stats target bps reflects requested speed
+    [Setup]    Prepare Clean EPC With Attached UE 1
     Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp
     Sleep    2s
-    ${expected_bps}=    Evaluate    10 * 1000000
-    Verify Traffic Stats For UE 1 Bearer 9 Target Bps Is ${expected_bps}
+    Verify Traffic Stats For UE 1 Bearer 9 Target Bps Matches 10 Mbps
 
 *** Keywords ***
 Prepare Clean EPC With Attached UE ${ue_id}
@@ -87,6 +86,7 @@ Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Protocol Is ${protocol}
     ${stats}=    Get Traffic Stats    ${ue_id}    ${bearer_id}
     Should Be Equal    ${stats}[protocol]    ${protocol}
 
-Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Target Bps Is ${expected_bps}
+Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Target Bps Matches ${mbps} Mbps
     ${stats}=    Get Traffic Stats    ${ue_id}    ${bearer_id}
+    ${expected_bps}=    Evaluate    ${mbps} * 1000000
     Should Be Equal As Numbers    ${stats}[target_bps]    ${expected_bps}
