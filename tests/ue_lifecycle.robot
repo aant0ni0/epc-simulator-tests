@@ -41,6 +41,11 @@ UL08 - detaching UE that is not attached is rejected with status 400
     [Setup]    Reset EPC
     Verify If Detaching UE 5 Is Rejected
 
+UL09 - attached UE appears in all UEs list
+    [Setup]    Reset EPC
+    Attach UE With ID 5
+    Verify UE 5 Is In All UEs List
+
 *** Keywords ***
 Reset EPC
     ${status_code}=    Reset Response
@@ -79,3 +84,8 @@ Verify If Attaching UE With Invalid ID ${ue_id} Is Rejected
 Verify If Detaching UE ${ue_id} Is Rejected
     ${status_code}=    Detach UE Without Raise    ${ue_id}
     Should Be Equal As Integers    ${status_code}    400
+
+Verify UE ${ue_id} Is In All UEs List
+    ${ues}=    Get Ues
+    ${ue_id_int}=    Convert To Integer    ${ue_id}
+    Should Contain    ${ues}    ${ue_id_int}

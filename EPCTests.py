@@ -43,6 +43,11 @@ class EPCTests:
         response = requests.get(f"{self.base_url}/ues/{ue_id}")
         return response.status_code
 
+    def get_ues(self):
+        response = requests.get(f"{self.base_url}/ues")
+        response.raise_for_status()
+        return response.json()["ues"]
+
     def get_ues_length(self):
         response = requests.get(f"{self.base_url}/ues")
         response.raise_for_status()

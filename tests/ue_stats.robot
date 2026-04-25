@@ -41,6 +41,12 @@ ST06 - traffic stats target bps reflects requested speed
     Sleep    2s
     Verify Traffic Stats For UE 1 Bearer 9 Target Bps Matches 10 Mbps
 
+ST07 - total rx bps in global stats reflects active traffic
+    [Setup]    Prepare Clean EPC With Attached UE 1
+    Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp
+    Sleep    2s
+    Verify Global Rx Traffic Is Active
+
 *** Keywords ***
 Prepare Clean EPC With Attached UE ${ue_id}
     Reset EPC
@@ -90,3 +96,7 @@ Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Target Bps Matches ${mb
     ${stats}=    Get Traffic Stats    ${ue_id}    ${bearer_id}
     ${expected_bps}=    Evaluate    ${mbps} * 1000000
     Should Be Equal As Numbers    ${stats}[target_bps]    ${expected_bps}
+
+Verify Global Rx Traffic Is Active
+    ${stats}=    Get Global Stats
+    Should Be True    ${stats}[total_rx_bps] > 0

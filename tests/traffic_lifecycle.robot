@@ -31,6 +31,16 @@ TLC05 - starting traffic on non-existing bearer 3 is rejected with status 400
     [Setup]    Prepare Clean EPC
     Verify If Starting Traffic On UE 1 Bearer 3 With 10 Mbps Protocol udp Is Rejected
 
+TLC06 - start traffic response contains target bps matching requested speed
+    [Setup]    Prepare Clean EPC
+    Verify Starting Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp Returns Correct Target Bps
+
+TLC07 - starting traffic on bearer 9 generates rx_bps stats after 2 seconds
+    [Setup]    Prepare Clean EPC
+    Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp
+    Sleep    2s
+    Verify Traffic Stats For UE 1 Bearer 9 Have rx_bps Greater Than 0
+
 *** Keywords ***
 Prepare Clean EPC
     Reset EPC
@@ -63,3 +73,14 @@ Verify Stopping Traffic On UE ${ue_id} Bearer ${bearer_id} Returns traffic_stopp
 Verify If Starting Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol} Is Rejected
     ${status_code}=    Start Traffic Without Raise    ${ue_id}    ${bearer_id}    ${protocol}    mbps=${mbps}
     Should Be Equal As Integers    ${status_code}    400
+
+Verify Starting Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol} Returns Correct Target Bps
+    ${response}=    Start Traffic    ${ue_id}    ${bearer_id}    ${protocol}    mbps=${mbps}
+    Should Be Equal As Integers    ${response.status_code}    200
+    ${body}=    Evaluate    $response.json()
+    ${expected_bps}=    Evaluate    ${mbps} * 1000000
+    Should Be Equal As Integers    ${body}[target_bps]    ${expected_bps}
+
+Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Have rx_bps Greater Than 0
+    ${stats}=    Get Traffic Stats    ${ue_id}    ${bearer_id}
+    Should Be True    ${stats}[rx_bps] > 0
