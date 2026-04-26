@@ -81,11 +81,13 @@ Delete Bearer ${bearer_id} From UE ${ue_id}
 
 Verify If UE ${ue_id} Has Bearer ${bearer_id} Added
     ${ue}=    Get UE    ${ue_id}
-    Should Contain    ${ue}[bearers]    ${bearer_id}
+    ${bearer_id_str}=    Convert To String    ${bearer_id}
+    Should Contain    ${ue}[bearers]    ${bearer_id_str}
 
 Verify If UE ${ue_id} Has Bearer ${bearer_id} Not Added
     ${ue}=    Get UE    ${ue_id}
-    Should Not Contain    ${ue}[bearers]    ${bearer_id}
+    ${bearer_id_str}=    Convert To String    ${bearer_id}
+    Should Not Contain    ${ue}[bearers]    ${bearer_id_str}
 
 Verify If Deleting Out Of Range Bearer ${bearer_id} From UE ${ue_id} Is Rejected
     ${status_code}=    Delete Bearer    ${ue_id}    ${bearer_id}
@@ -98,7 +100,7 @@ Add Bearers 1 To 8 To UE ${ue_id}
 
 Verify If UE ${ue_id} Has Bearers 1 To 8 Attached
     FOR    ${bearer_id}    IN RANGE    1    9
-        Verify If UE ${ue_id} Has Bearer ${bearer_id} Attached
+        Verify If UE ${ue_id} Has Bearer ${bearer_id} Added
     END
 Verify If ${actual_status_code} Is ${expected_status_code}
     Should Be Equal As Integers    ${actual_status_code}    ${expected_status_code}
