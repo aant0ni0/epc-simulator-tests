@@ -15,43 +15,55 @@ BV02 - adding bearer with valid ID 1 is accepted and bearer appears on UE
 
 BV03 - adding bearer with ID 10 which is above maximum range is rejected with status 422
     [Setup]    Prepare Clean EPC With Attached UE 1
-    Verify If Adding Bearer 10 To UE 1 Is Rejected With Status 422
+    ${status_code}=    Add Bearer 10 To UE 1 Without Raise
+    Verify If ${status_code} Is 422
 
 BV04 - adding bearer with ID 0 which is below minimum range is rejected with status 422
     [Setup]    Prepare Clean EPC With Attached UE 1
-    Verify If Adding Bearer 0 To UE 1 Is Rejected With Status 422
+    ${status_code}=    Add Bearer 0 To UE 1 Without Raise
+    Verify If ${status_code} Is 422
 
 BV05 - adding bearer 9 that already exists as default bearer is rejected with status 400
     [Setup]    Prepare Clean EPC With Attached UE 1
-    Verify If Adding Duplicate Bearer 9 To UE 1 Is Rejected
+    ${status_code}=    Add Bearer 9 To UE 1 Without Raise
+    Verify If ${status_code} Is 400
 
 BV06 - adding bearer to UE that is not attached is rejected with status 400
     [Setup]    Prepare Clean EPC With Attached UE 1
-    Verify If Adding Bearer 1 To Not Attached UE 99 Is Rejected
+    ${status_code}=    Add Bearer 1 To UE 99 Without Raise
+    Verify If ${status_code} Is 400
 
-BV07 - deleting existing bearer 1 returns status 200
-    [Setup]    Prepare Clean EPC With Attached UE 1 And Bearer 1
+BV07 - deleting existing bearer with ID 1 is accepted
+    [Setup]    Prepare Clean EPC With Attached UE 1
+    Add Bearer 1 To UE 1
     Delete Bearer 1 From UE 1
+    Verify If UE 1 Has Bearer 1 Not Attached
 
 BV08 - deleting bearer that does not exist is rejected with status 400
     [Setup]    Prepare Clean EPC With Attached UE 1
-    Verify If Deleting Nonexisting Bearer 5 From UE 1 Is Rejected
+    ${status_code}=    Delete Bearer 5 From UE 1
+    Verify If ${status_code} Is 400
 
-BV09 - deleting default bearer 9 is rejected with status 400
+BV09 - deleting default bearer with ID 9 is rejected with status 400
     [Setup]    Prepare Clean EPC With Attached UE 1
-    Verify If Deleting Default Bearer 9 From UE 1 Is Rejected
+    ${status_code}=    Delete Bearer 9 From UE 1
+    Verify If ${status_code} Is 400
 
 BV10 - deleting bearer with ID 0 which is below minimum range is rejected with status 400
     [Setup]    Prepare Clean EPC With Attached UE 1
-    Verify If Deleting Out Of Range Bearer 0 From UE 1 Is Rejected
+    ${status_code}=    Delete Bearer 0 From UE 1
+    Verify If ${status_code} Is 400
 
 BV11 - deleting bearer with ID 10 which is above maximum range is rejected with status 400
     [Setup]    Prepare Clean EPC With Attached UE 1
-    Verify If Deleting Out Of Range Bearer 10 From UE 1 Is Rejected
+    ${status_code}=    Delete Bearer 10 From UE 1
+    Verify If ${status_code} Is 400
 
-BV12 - adding bearer with ID 1 that already exists is rejected with status 400
-    [Setup]    Prepare Clean EPC With Attached UE 1 And Bearer 1
-    Verify If Adding Duplicate Bearer 1 To UE 1 Is Rejected
+BV12 - adding bearer that already exists is rejected with status 400
+    [Setup]    Prepare Clean EPC With Attached UE 1
+    Add Bearer 1 To UE 1
+    ${status_code}=    Add Bearer 1 To UE 1 Without Raise
+    Verify If ${status_code} Is 400
 
 BV13 - adding all bearers from 1 to 8 is accepted and all appear on UE
     [Setup]    Prepare Clean EPC With Attached UE 1
@@ -73,15 +85,6 @@ BV13 - adding all bearers from 1 to 8 is accepted and all appear on UE
     Verify If UE 1 Has Bearer 8 Attached
 
 *** Keywords ***
-Prepare Clean EPC With Attached UE ${ue_id}
-    Reset EPC
-    Attach UE With ID ${ue_id}
-
-Prepare Clean EPC With Attached UE ${ue_id} And Bearer ${bearer_id}
-    Reset EPC
-    Attach UE With ID ${ue_id}
-    Add Bearer ${bearer_id} To UE ${ue_id}
-
 Reset EPC
     ${status_code}=    Reset Response
     Should Be Equal As Integers    ${status_code}    200
@@ -91,38 +94,29 @@ Attach UE With ID ${ue_id}
     Should Be Equal    ${response}[status]    attached
     Should Be Equal As Integers    ${response}[ue_id]    ${ue_id}
 
-Verify If UE ${ue_id} Has Bearer ${bearer_id} Attached
-    ${ue}=    Get UE    ${ue_id}
-    Should Contain    ${ue}[bearers]    ${bearer_id}
+Prepare Clean EPC With Attached UE ${ue_id}
+    Reset EPC
+    Attach UE With ID ${ue_id}
 
 Add Bearer ${bearer_id} To UE ${ue_id}
     ${response}=    Add Bearer    ${ue_id}    ${bearer_id}
     Should Be Equal As Integers    ${response}[bearer_id]    ${bearer_id}
 
-Verify If Adding Bearer ${bearer_id} To UE ${ue_id} Is Rejected With Status 422
+Add Bearer ${bearer_id} To UE ${ue_id} Without Raise
     ${status_code}=    Add Bearer Without Raise    ${ue_id}    ${bearer_id}
-    Should Be Equal As Integers    ${status_code}    422
+    RETURN    ${status_code}
 
-Verify If Adding Duplicate Bearer ${bearer_id} To UE ${ue_id} Is Rejected
-    ${status_code}=    Add Bearer Without Raise    ${ue_id}    ${bearer_id}
-    Should Be Equal As Integers    ${status_code}    400
+Verify If UE ${ue_id} Has Bearer ${bearer_id} Attached
+    ${ue}=    Get UE    ${ue_id}
+    Should Contain    ${ue}[bearers]    ${bearer_id}
 
-Verify If Adding Bearer ${bearer_id} To Not Attached UE ${ue_id} Is Rejected
-    ${status_code}=    Add Bearer Without Raise    ${ue_id}    ${bearer_id}
-    Should Be Equal As Integers    ${status_code}    400
+Verify If UE ${ue_id} Has Bearer ${bearer_id} Not Attached
+    ${ue}=    Get UE    ${ue_id}
+    Should Not Contain    ${ue}[bearers]    ${bearer_id}
 
 Delete Bearer ${bearer_id} From UE ${ue_id}
     ${status_code}=    Delete Bearer    ${ue_id}    ${bearer_id}
-    Should Be Equal As Integers    ${status_code}    200
+    RETURN   ${status_code}
 
-Verify If Deleting Nonexisting Bearer ${bearer_id} From UE ${ue_id} Is Rejected
-    ${status_code}=    Delete Bearer    ${ue_id}    ${bearer_id}
-    Should Be Equal As Integers    ${status_code}    400
-
-Verify If Deleting Default Bearer ${bearer_id} From UE ${ue_id} Is Rejected
-    ${status_code}=    Delete Bearer    ${ue_id}    ${bearer_id}
-    Should Be Equal As Integers    ${status_code}    400
-
-Verify If Deleting Out Of Range Bearer ${bearer_id} From UE ${ue_id} Is Rejected
-    ${status_code}=    Delete Bearer    ${ue_id}    ${bearer_id}
-    Should Be Equal As Integers    ${status_code}    400
+Verify If ${actual_status_code} Is ${expected_status_code}
+    Should Be Equal As Integers    ${actual_status_code}    ${expected_status_code}

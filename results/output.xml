@@ -1,248 +1,859 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.4.2 (Python 3.14.0 on win32)" generated="2026-04-20T17:35:35.228421" rpa="false" schemaversion="5">
+<robot generator="Robot 7.4.2 (Python 3.14.0 on win32)" generated="2026-04-26T20:47:52.370264" rpa="false" schemaversion="5">
 <suite id="s1" name="Epc-Simulator-Tests" source="C:\Users\sylwia.lesniak\Desktop\testy\epc-simulator-tests">
 <suite id="s1-s1" name="Tests" source="C:\Users\sylwia.lesniak\Desktop\testy\epc-simulator-tests\tests">
-<suite id="s1-s1-s1" name="Bearer Validation" source="C:\Users\sylwia.lesniak\Desktop\testy\epc-simulator-tests\tests\bearer_validation.robot">
-<kw name="Prepare Clean EPC With Attached UE ${UE_ID}" type="SETUP" source_name="Prepare Clean EPC With Attached UE ${ue_id}">
+<suite id="s1-s1-s1" name="Ue Stats" source="C:\Users\sylwia.lesniak\Desktop\testy\epc-simulator-tests\tests\ue_stats.robot">
+<test id="s1-s1-s1-t1" name="ST01 - ue count in global stats reflects number of attached UEs" line="8">
+<kw name="Prepare Clean EPC With Attached UE 1" type="SETUP" source_name="Prepare Clean EPC With Attached UE ${ue_id}">
 <kw name="Reset EPC">
 <kw name="Reset Response" owner="EPCTests">
-<msg time="2026-04-20T17:35:35.360053" level="INFO">${status_code} = 200</msg>
+<msg time="2026-04-26T20:47:52.517719" level="INFO">${status_code} = 200</msg>
 <var>${status_code}</var>
-<status status="PASS" start="2026-04-20T17:35:35.348587" elapsed="0.011855"/>
+<status status="PASS" start="2026-04-26T20:47:52.504180" elapsed="0.013766"/>
 </kw>
 <kw name="Should Be Equal As Integers" owner="BuiltIn">
-<msg time="2026-04-20T17:35:35.361108" level="INFO">Argument types are:
+<msg time="2026-04-26T20:47:52.518793" level="INFO">Argument types are:
 &lt;class 'int'&gt;
 &lt;class 'str'&gt;</msg>
 <arg>${status_code}</arg>
 <arg>200</arg>
 <doc>Fails if objects are unequal after converting them to integers.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.360685" elapsed="0.000593"/>
+<status status="PASS" start="2026-04-26T20:47:52.518204" elapsed="0.000776"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.348258" elapsed="0.013151"/>
+<status status="PASS" start="2026-04-26T20:47:52.503708" elapsed="0.015413"/>
 </kw>
 <kw name="Attach UE With ID ${ue_id}" source_name="Attach UE With ID ${ue_id}">
 <kw name="Attach Ue" owner="EPCTests">
-<msg time="2026-04-20T17:35:35.369378" level="INFO">${response} = {'status': 'attached', 'ue_id': 1}</msg>
+<msg time="2026-04-26T20:47:52.528537" level="INFO">${response} = {'status': 'attached', 'ue_id': 1}</msg>
 <var>${response}</var>
 <arg>${ue_id}</arg>
-<status status="PASS" start="2026-04-20T17:35:35.361990" elapsed="0.007531"/>
+<status status="PASS" start="2026-04-26T20:47:52.519715" elapsed="0.009013"/>
 </kw>
 <kw name="Should Be Equal" owner="BuiltIn">
-<arg>${response["status"]}</arg>
+<arg>${response}[status]</arg>
 <arg>attached</arg>
 <doc>Fails if the given objects are unequal.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.369703" elapsed="0.000641"/>
+<status status="PASS" start="2026-04-26T20:47:52.528940" elapsed="0.000485"/>
 </kw>
 <kw name="Should Be Equal As Integers" owner="BuiltIn">
-<msg time="2026-04-20T17:35:35.370971" level="INFO">Argument types are:
+<msg time="2026-04-26T20:47:52.529966" level="INFO">Argument types are:
 &lt;class 'int'&gt;
 &lt;class 'str'&gt;</msg>
-<arg>${response["ue_id"]}</arg>
+<arg>${response}[ue_id]</arg>
 <arg>${ue_id}</arg>
 <doc>Fails if objects are unequal after converting them to integers.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.370500" elapsed="0.000641"/>
+<status status="PASS" start="2026-04-26T20:47:52.529605" elapsed="0.000578"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.361584" elapsed="0.009662"/>
+<status status="PASS" start="2026-04-26T20:47:52.519314" elapsed="0.010988"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.347865" elapsed="0.023480"/>
+<status status="PASS" start="2026-04-26T20:47:52.503280" elapsed="0.027131"/>
 </kw>
-<test id="s1-s1-s1-t1" name="default_bearer_exists" line="10">
-<kw name="Verify If UE ${UE_ID} Has Bearer 9 Attached" source_name="Verify If UE ${ue_id} Has Bearer ${bearer_id} Attached">
-<kw name="Get Ue" owner="EPCTests">
-<msg time="2026-04-20T17:35:35.384061" level="INFO">${ue} = {'ue_id': 1, 'bearers': {'9': {'bearer_id': 9, 'protocol': None, 'target_bps': None, 'active': False}}, 'stats': {}}</msg>
-<var>${ue}</var>
-<arg>${ue_id}</arg>
-<status status="PASS" start="2026-04-20T17:35:35.379144" elapsed="0.005202"/>
+<kw name="Verify Global UE Count Is 1" source_name="Verify Global UE Count Is ${count}">
+<kw name="Get Global Stats" owner="EPCTests">
+<msg time="2026-04-26T20:47:52.536103" level="INFO">${stats} = {'scope': 'all', 'ue_count': 1, 'bearer_count': 0, 'total_tx_bps': 0, 'total_rx_bps': 0, 'details': None}</msg>
+<var>${stats}</var>
+<status status="PASS" start="2026-04-26T20:47:52.531041" elapsed="0.005262"/>
 </kw>
-<kw name="Should Contain" owner="BuiltIn">
-<arg>${ue}[bearers]</arg>
-<arg>${bearer_id}</arg>
-<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.384545" elapsed="0.000531"/>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:47:52.536955" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${stats}[ue_count]</arg>
+<arg>${count}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:47:52.536512" elapsed="0.000664"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.378781" elapsed="0.006415"/>
+<status status="PASS" start="2026-04-26T20:47:52.530739" elapsed="0.006562"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.371445" elapsed="0.013999"/>
+<status status="PASS" start="2026-04-26T20:47:52.500983" elapsed="0.036552"/>
 </test>
-<test id="s1-s1-s1-t2" name="01_add_bearer_with_id_1" line="13">
-<kw name="Add Bearer 1 To UE ${UE_ID}" source_name="Add Bearer ${bearer_id} To UE ${ue_id}">
+<test id="s1-s1-s1-t2" name="ST02 - bearer count in global stats reflects number of bearers with active traffic" line="12">
+<kw name="Prepare Clean EPC With Attached UE 1" type="SETUP" source_name="Prepare Clean EPC With Attached UE ${ue_id}">
+<kw name="Reset EPC">
+<kw name="Reset Response" owner="EPCTests">
+<msg time="2026-04-26T20:47:52.552575" level="INFO">${status_code} = 200</msg>
+<var>${status_code}</var>
+<status status="PASS" start="2026-04-26T20:47:52.544995" elapsed="0.007735"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:47:52.553397" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:47:52.552926" elapsed="0.000673"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:52.544777" elapsed="0.009104"/>
+</kw>
+<kw name="Attach UE With ID ${ue_id}" source_name="Attach UE With ID ${ue_id}">
+<kw name="Attach Ue" owner="EPCTests">
+<msg time="2026-04-26T20:47:52.563240" level="INFO">${response} = {'status': 'attached', 'ue_id': 1}</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<status status="PASS" start="2026-04-26T20:47:52.554502" elapsed="0.008943"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${response}[status]</arg>
+<arg>attached</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-04-26T20:47:52.563672" elapsed="0.000489"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:47:52.564691" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response}[ue_id]</arg>
+<arg>${ue_id}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:47:52.564331" elapsed="0.000574"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:52.554128" elapsed="0.010876"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:52.544434" elapsed="0.020674"/>
+</kw>
+<kw name="Add Bearer 1 To UE 1" source_name="Add Bearer ${bearer_id} To UE ${ue_id}">
 <kw name="Add Bearer" owner="EPCTests">
-<msg time="2026-04-20T17:35:35.398807" level="INFO">${response} = {'status': 'bearer_added', 'ue_id': 1, 'bearer_id': 1}</msg>
+<msg time="2026-04-26T20:47:52.573585" level="INFO">${response} = {'status': 'bearer_added', 'ue_id': 1, 'bearer_id': 1}</msg>
 <var>${response}</var>
 <arg>${ue_id}</arg>
 <arg>${bearer_id}</arg>
-<status status="PASS" start="2026-04-20T17:35:35.390684" elapsed="0.008379"/>
+<status status="PASS" start="2026-04-26T20:47:52.565737" elapsed="0.008106"/>
 </kw>
 <kw name="Should Be Equal As Integers" owner="BuiltIn">
-<msg time="2026-04-20T17:35:35.399740" level="INFO">Argument types are:
+<msg time="2026-04-26T20:47:52.574539" level="INFO">Argument types are:
 &lt;class 'int'&gt;
 &lt;class 'str'&gt;</msg>
 <arg>${response}[bearer_id]</arg>
 <arg>${bearer_id}</arg>
 <doc>Fails if objects are unequal after converting them to integers.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.399274" elapsed="0.000684"/>
+<status status="PASS" start="2026-04-26T20:47:52.574064" elapsed="0.000704"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.390305" elapsed="0.009766"/>
+<status status="PASS" start="2026-04-26T20:47:52.565411" elapsed="0.009478"/>
 </kw>
-<kw name="Verify If UE ${UE_ID} Has Bearer 1 Attached" source_name="Verify If UE ${ue_id} Has Bearer ${bearer_id} Attached">
-<kw name="Get Ue" owner="EPCTests">
-<msg time="2026-04-20T17:35:35.405810" level="INFO">${ue} = {'ue_id': 1, 'bearers': {'9': {'bearer_id': 9, 'protocol': None, 'target_bps': None, 'active': False}, '1': {'bearer_id': 1, 'protocol': None, 'target_bps': None, 'active': False}}, 'stats': {}}</msg>
-<var>${ue}</var>
-<arg>${ue_id}</arg>
-<status status="PASS" start="2026-04-20T17:35:35.400799" elapsed="0.005384"/>
-</kw>
-<kw name="Should Contain" owner="BuiltIn">
-<arg>${ue}[bearers]</arg>
-<arg>${bearer_id}</arg>
-<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.406386" elapsed="0.000450"/>
-</kw>
-<status status="PASS" start="2026-04-20T17:35:35.400442" elapsed="0.006508"/>
-</kw>
-<status status="PASS" start="2026-04-20T17:35:35.387549" elapsed="0.019662"/>
-</test>
-<test id="s1-s1-s1-t3" name="02_add_bearer_with_id_10" line="17">
-<kw name="Verify If Adding Bearer 10 To UE ${UE_ID} Is Rejected" source_name="Verify If Adding Bearer ${bearer_id} To UE ${ue_id} Is Rejected">
-<kw name="Add Bearer Without Raise" owner="EPCTests">
-<msg time="2026-04-20T17:35:35.418797" level="INFO">${status_code} = 422</msg>
-<var>${status_code}</var>
+<kw name="Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp" source_name="Start Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol}">
+<kw name="Start Traffic" owner="EPCTests">
+<msg time="2026-04-26T20:47:52.575779" level="INFO">URL: http://localhost:8000/ues/1/bearers/9/traffic</msg>
+<msg time="2026-04-26T20:47:52.575909" level="INFO">Payload: {'protocol': 'udp', 'Mbps': 10.0}</msg>
+<msg time="2026-04-26T20:47:52.588492" level="INFO">Status: 200</msg>
+<msg time="2026-04-26T20:47:52.588822" level="INFO">Response body: {"status":"traffic_started","ue_id":1,"bearer_id":9,"target_bps":10000000}</msg>
+<msg time="2026-04-26T20:47:52.589023" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
 <arg>${ue_id}</arg>
 <arg>${bearer_id}</arg>
-<status status="PASS" start="2026-04-20T17:35:35.414401" elapsed="0.004577"/>
+<arg>${protocol}</arg>
+<arg>mbps=${mbps}</arg>
+<status status="PASS" start="2026-04-26T20:47:52.575490" elapsed="0.013639"/>
 </kw>
 <kw name="Should Be Equal As Integers" owner="BuiltIn">
-<msg time="2026-04-20T17:35:35.419616" level="INFO">Argument types are:
+<msg time="2026-04-26T20:47:52.590183" level="INFO">Argument types are:
 &lt;class 'int'&gt;
 &lt;class 'str'&gt;</msg>
-<arg>${status_code}</arg>
-<arg>422</arg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
 <doc>Fails if objects are unequal after converting them to integers.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.419168" elapsed="0.000613"/>
+<status status="PASS" start="2026-04-26T20:47:52.589346" elapsed="0.001080"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.414044" elapsed="0.005949"/>
+<status status="PASS" start="2026-04-26T20:47:52.575148" elapsed="0.015424"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.411407" elapsed="0.008892"/>
-</test>
-<test id="s1-s1-s1-t4" name="03_add_bearer_with_id_0" line="20">
-<kw name="Verify If Adding Bearer 0 To UE ${UE_ID} Is Rejected" source_name="Verify If Adding Bearer ${bearer_id} To UE ${ue_id} Is Rejected">
-<kw name="Add Bearer Without Raise" owner="EPCTests">
-<msg time="2026-04-20T17:35:35.431176" level="INFO">${status_code} = 422</msg>
-<var>${status_code}</var>
+<kw name="Start Traffic On UE 1 Bearer 1 With 10 Mbps Protocol udp" source_name="Start Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol}">
+<kw name="Start Traffic" owner="EPCTests">
+<msg time="2026-04-26T20:47:52.591641" level="INFO">URL: http://localhost:8000/ues/1/bearers/1/traffic</msg>
+<msg time="2026-04-26T20:47:52.591820" level="INFO">Payload: {'protocol': 'udp', 'Mbps': 10.0}</msg>
+<msg time="2026-04-26T20:47:52.603851" level="INFO">Status: 200</msg>
+<msg time="2026-04-26T20:47:52.604072" level="INFO">Response body: {"status":"traffic_started","ue_id":1,"bearer_id":1,"target_bps":10000000}</msg>
+<msg time="2026-04-26T20:47:52.604340" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
 <arg>${ue_id}</arg>
 <arg>${bearer_id}</arg>
-<status status="PASS" start="2026-04-20T17:35:35.427101" elapsed="0.004212"/>
+<arg>${protocol}</arg>
+<arg>mbps=${mbps}</arg>
+<status status="PASS" start="2026-04-26T20:47:52.591332" elapsed="0.013157"/>
 </kw>
 <kw name="Should Be Equal As Integers" owner="BuiltIn">
-<msg time="2026-04-20T17:35:35.431948" level="INFO">Argument types are:
+<msg time="2026-04-26T20:47:52.605403" level="INFO">Argument types are:
 &lt;class 'int'&gt;
 &lt;class 'str'&gt;</msg>
-<arg>${status_code}</arg>
-<arg>422</arg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
 <doc>Fails if objects are unequal after converting them to integers.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.431490" elapsed="0.000637"/>
+<status status="PASS" start="2026-04-26T20:47:52.604691" elapsed="0.000893"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.426748" elapsed="0.005486"/>
+<status status="PASS" start="2026-04-26T20:47:52.590915" elapsed="0.014870"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.422277" elapsed="0.010208"/>
-</test>
-<test id="s1-s1-s1-t5" name="01_delete_existing_bearer" line="23">
-<kw name="Verify If UE ${UE_ID} Has Bearer 1 Attached" source_name="Verify If UE ${ue_id} Has Bearer ${bearer_id} Attached">
-<kw name="Get Ue" owner="EPCTests">
-<msg time="2026-04-20T17:35:35.441916" level="INFO">${ue} = {'ue_id': 1, 'bearers': {'9': {'bearer_id': 9, 'protocol': None, 'target_bps': None, 'active': False}, '1': {'bearer_id': 1, 'protocol': None, 'target_bps': None, 'active': False}}, 'stats': {}}</msg>
-<var>${ue}</var>
-<arg>${ue_id}</arg>
-<status status="PASS" start="2026-04-20T17:35:35.436738" elapsed="0.005580"/>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-04-26T20:47:54.607161" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-04-26T20:47:52.606056" elapsed="2.001372"/>
 </kw>
-<kw name="Should Contain" owner="BuiltIn">
-<arg>${ue}[bearers]</arg>
-<arg>${bearer_id}</arg>
-<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.442575" elapsed="0.000537"/>
-</kw>
-<status status="PASS" start="2026-04-20T17:35:35.436296" elapsed="0.006952"/>
-</kw>
-<kw name="Delete Bearer 1 From UE ${UE_ID}" source_name="Delete Bearer ${bearer_id} From UE ${ue_id}">
-<kw name="Delete Bearer" owner="EPCTests">
-<msg time="2026-04-20T17:35:35.451245" level="INFO">${status_code} = 200</msg>
-<var>${status_code}</var>
-<arg>${ue_id}</arg>
-<arg>${bearer_id}</arg>
-<status status="PASS" start="2026-04-20T17:35:35.444018" elapsed="0.007411"/>
+<kw name="Verify Global Bearer Count Is 2" source_name="Verify Global Bearer Count Is ${count}">
+<kw name="Get Global Stats" owner="EPCTests">
+<msg time="2026-04-26T20:47:54.619818" level="INFO">${stats} = {'scope': 'all', 'ue_count': 1, 'bearer_count': 2, 'total_tx_bps': 29595035, 'total_rx_bps': 29595035, 'details': None}</msg>
+<var>${stats}</var>
+<status status="PASS" start="2026-04-26T20:47:54.608284" elapsed="0.011862"/>
 </kw>
 <kw name="Should Be Equal As Integers" owner="BuiltIn">
-<msg time="2026-04-20T17:35:35.452143" level="INFO">Argument types are:
+<msg time="2026-04-26T20:47:54.620717" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${stats}[bearer_count]</arg>
+<arg>${count}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:47:54.620347" elapsed="0.000570"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:54.607861" elapsed="0.013177"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:52.539725" elapsed="2.081517"/>
+</test>
+<test id="s1-s1-s1-t3" name="ST03 - total tx bps in global stats reflects active traffic" line="20">
+<kw name="Prepare Clean EPC With Attached UE 1" type="SETUP" source_name="Prepare Clean EPC With Attached UE ${ue_id}">
+<kw name="Reset EPC">
+<kw name="Reset Response" owner="EPCTests">
+<msg time="2026-04-26T20:47:54.635338" level="INFO">${status_code} = 200</msg>
+<var>${status_code}</var>
+<status status="PASS" start="2026-04-26T20:47:54.628178" elapsed="0.007343"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:47:54.636170" level="INFO">Argument types are:
 &lt;class 'int'&gt;
 &lt;class 'str'&gt;</msg>
 <arg>${status_code}</arg>
 <arg>200</arg>
 <doc>Fails if objects are unequal after converting them to integers.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.451627" elapsed="0.000743"/>
+<status status="PASS" start="2026-04-26T20:47:54.635719" elapsed="0.000658"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.443615" elapsed="0.008863"/>
+<status status="PASS" start="2026-04-26T20:47:54.627971" elapsed="0.008520"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.434206" elapsed="0.018530"/>
-</test>
-<test id="s1-s1-s1-t6" name="02_delete_nonexisting_bearer" line="27">
-<kw name="Verify If Deleting Nonexisting Bearer 5 From UE ${UE_ID} Is Rejected" source_name="Verify If Deleting Nonexisting Bearer ${bearer_id} From UE ${ue_id} Is Rejected">
-<kw name="Delete Bearer" owner="EPCTests">
-<msg time="2026-04-20T17:35:35.464756" level="INFO">${status_code} = 400</msg>
-<var>${status_code}</var>
+<kw name="Attach UE With ID ${ue_id}" source_name="Attach UE With ID ${ue_id}">
+<kw name="Attach Ue" owner="EPCTests">
+<msg time="2026-04-26T20:47:54.645242" level="INFO">${response} = {'status': 'attached', 'ue_id': 1}</msg>
+<var>${response}</var>
 <arg>${ue_id}</arg>
-<arg>${bearer_id}</arg>
-<status status="PASS" start="2026-04-20T17:35:35.460282" elapsed="0.004762"/>
+<status status="PASS" start="2026-04-26T20:47:54.636997" elapsed="0.008501"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${response}[status]</arg>
+<arg>attached</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-04-26T20:47:54.645745" elapsed="0.000457"/>
 </kw>
 <kw name="Should Be Equal As Integers" owner="BuiltIn">
-<msg time="2026-04-20T17:35:35.465563" level="INFO">Argument types are:
+<msg time="2026-04-26T20:47:54.646654" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response}[ue_id]</arg>
+<arg>${ue_id}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:47:54.646357" elapsed="0.000508"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:54.636670" elapsed="0.010306"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:54.627649" elapsed="0.019435"/>
+</kw>
+<kw name="Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp" source_name="Start Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol}">
+<kw name="Start Traffic" owner="EPCTests">
+<msg time="2026-04-26T20:47:54.647859" level="INFO">URL: http://localhost:8000/ues/1/bearers/9/traffic</msg>
+<msg time="2026-04-26T20:47:54.647967" level="INFO">Payload: {'protocol': 'udp', 'Mbps': 10.0}</msg>
+<msg time="2026-04-26T20:47:54.657772" level="INFO">Status: 200</msg>
+<msg time="2026-04-26T20:47:54.658432" level="INFO">Response body: {"status":"traffic_started","ue_id":1,"bearer_id":9,"target_bps":10000000}</msg>
+<msg time="2026-04-26T20:47:54.658618" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<arg>${bearer_id}</arg>
+<arg>${protocol}</arg>
+<arg>mbps=${mbps}</arg>
+<status status="PASS" start="2026-04-26T20:47:54.647629" elapsed="0.011133"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:47:54.659626" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:47:54.658956" elapsed="0.000857"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:54.647349" elapsed="0.012585"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-04-26T20:47:56.661191" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-04-26T20:47:54.660173" elapsed="2.002377"/>
+</kw>
+<kw name="Verify Global Traffic Is Active">
+<kw name="Get Global Stats" owner="EPCTests">
+<msg time="2026-04-26T20:47:56.676243" level="INFO">${stats} = {'scope': 'all', 'ue_count': 1, 'bearer_count': 1, 'total_tx_bps': 9902506, 'total_rx_bps': 9902506, 'details': None}</msg>
+<var>${stats}</var>
+<status status="PASS" start="2026-04-26T20:47:56.665016" elapsed="0.011503"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${stats}[total_tx_bps] &gt; 0</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-04-26T20:47:56.676851" elapsed="0.000918"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:56.663914" elapsed="0.014076"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:54.623858" elapsed="2.054778"/>
+</test>
+<test id="s1-s1-s1-t4" name="ST04 - stats with include details contains per bearer breakdown" line="26">
+<kw name="Prepare Clean EPC With Attached UE 1" type="SETUP" source_name="Prepare Clean EPC With Attached UE ${ue_id}">
+<kw name="Reset EPC">
+<kw name="Reset Response" owner="EPCTests">
+<msg time="2026-04-26T20:47:56.703238" level="INFO">${status_code} = 200</msg>
+<var>${status_code}</var>
+<status status="PASS" start="2026-04-26T20:47:56.691386" elapsed="0.012296"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:47:56.704868" level="INFO">Argument types are:
 &lt;class 'int'&gt;
 &lt;class 'str'&gt;</msg>
 <arg>${status_code}</arg>
-<arg>400</arg>
+<arg>200</arg>
 <doc>Fails if objects are unequal after converting them to integers.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.465227" elapsed="0.000536"/>
+<status status="PASS" start="2026-04-26T20:47:56.704084" elapsed="0.001175"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.459920" elapsed="0.005969"/>
+<status status="PASS" start="2026-04-26T20:47:56.690986" elapsed="0.014529"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.454672" elapsed="0.011472"/>
-</test>
-<test id="s1-s1-s1-t7" name="03_delete_default_bearer" line="30">
-<kw name="Verify If Deleting Default Bearer 9 From UE ${UE_ID} Is Rejected" source_name="Verify If Deleting Default Bearer ${bearer_id} From UE ${ue_id} Is Rejected">
-<kw name="Delete Bearer" owner="EPCTests">
-<msg time="2026-04-20T17:35:35.475706" level="INFO">${status_code} = 400</msg>
-<var>${status_code}</var>
+<kw name="Attach UE With ID ${ue_id}" source_name="Attach UE With ID ${ue_id}">
+<kw name="Attach Ue" owner="EPCTests">
+<msg time="2026-04-26T20:47:56.717939" level="INFO">${response} = {'status': 'attached', 'ue_id': 1}</msg>
+<var>${response}</var>
 <arg>${ue_id}</arg>
-<arg>${bearer_id}</arg>
-<status status="PASS" start="2026-04-20T17:35:35.470793" elapsed="0.005326"/>
+<status status="PASS" start="2026-04-26T20:47:56.706771" elapsed="0.011560"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${response}[status]</arg>
+<arg>attached</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-04-26T20:47:56.718648" elapsed="0.000638"/>
 </kw>
 <kw name="Should Be Equal As Integers" owner="BuiltIn">
-<msg time="2026-04-20T17:35:35.476832" level="INFO">Argument types are:
+<msg time="2026-04-26T20:47:56.720212" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response}[ue_id]</arg>
+<arg>${ue_id}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:47:56.719655" elapsed="0.000852"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:56.705890" elapsed="0.014818"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:56.690163" elapsed="0.030872"/>
+</kw>
+<kw name="Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp" source_name="Start Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol}">
+<kw name="Start Traffic" owner="EPCTests">
+<msg time="2026-04-26T20:47:56.722631" level="INFO">URL: http://localhost:8000/ues/1/bearers/9/traffic</msg>
+<msg time="2026-04-26T20:47:56.723002" level="INFO">Payload: {'protocol': 'udp', 'Mbps': 10.0}</msg>
+<msg time="2026-04-26T20:47:56.735463" level="INFO">Status: 200</msg>
+<msg time="2026-04-26T20:47:56.735730" level="INFO">Response body: {"status":"traffic_started","ue_id":1,"bearer_id":9,"target_bps":10000000}</msg>
+<msg time="2026-04-26T20:47:56.736139" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<arg>${bearer_id}</arg>
+<arg>${protocol}</arg>
+<arg>mbps=${mbps}</arg>
+<status status="PASS" start="2026-04-26T20:47:56.722215" elapsed="0.014174"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:47:56.737586" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:47:56.736712" elapsed="0.001370"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:56.721655" elapsed="0.016623"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-04-26T20:47:58.739588" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-04-26T20:47:56.738642" elapsed="2.001360"/>
+</kw>
+<kw name="Verify Stats With Details For UE 1 Contains Bearer 9" source_name="Verify Stats With Details For UE ${ue_id} Contains Bearer ${bearer_id}">
+<kw name="Get Ue Stats With Details" owner="EPCTests">
+<msg time="2026-04-26T20:47:58.749320" level="INFO">${stats} = {'scope': 'ue:1', 'ue_count': 1, 'bearer_count': 1, 'total_tx_bps': 14881543, 'total_rx_bps': 14881543, 'details': {'1': {'9': 14881543}}}</msg>
+<var>${stats}</var>
+<arg>${ue_id}</arg>
+<status status="PASS" start="2026-04-26T20:47:58.742254" elapsed="0.007305"/>
+</kw>
+<kw name="Convert To String" owner="BuiltIn">
+<msg time="2026-04-26T20:47:58.750678" level="INFO">${ue_key} = 1</msg>
+<var>${ue_key}</var>
+<arg>${ue_id}</arg>
+<doc>Converts the given item to a Unicode string.</doc>
+<status status="PASS" start="2026-04-26T20:47:58.749868" elapsed="0.000991"/>
+</kw>
+<kw name="Convert To String" owner="BuiltIn">
+<msg time="2026-04-26T20:47:58.751723" level="INFO">${bearer_key} = 9</msg>
+<var>${bearer_key}</var>
+<arg>${bearer_id}</arg>
+<doc>Converts the given item to a Unicode string.</doc>
+<status status="PASS" start="2026-04-26T20:47:58.751158" elapsed="0.000989"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2026-04-26T20:47:58.752920" level="INFO">${ue_details} = {'9': 14881543}</msg>
+<var>${ue_details}</var>
+<arg>${stats}[details]</arg>
+<arg>${ue_key}</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2026-04-26T20:47:58.752420" elapsed="0.000716"/>
+</kw>
+<kw name="Should Contain" owner="BuiltIn">
+<arg>${ue_details}</arg>
+<arg>${bearer_key}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" start="2026-04-26T20:47:58.753420" elapsed="0.000744"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:58.741540" elapsed="0.012814"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:56.684723" elapsed="2.069959"/>
+</test>
+<test id="s1-s1-s1-t5" name="ST05 - traffic stats protocol field matches protocol used to start traffic" line="32">
+<kw name="Prepare Clean EPC With Attached UE 1" type="SETUP" source_name="Prepare Clean EPC With Attached UE ${ue_id}">
+<kw name="Reset EPC">
+<kw name="Reset Response" owner="EPCTests">
+<msg time="2026-04-26T20:47:58.786801" level="INFO">${status_code} = 200</msg>
+<var>${status_code}</var>
+<status status="PASS" start="2026-04-26T20:47:58.775532" elapsed="0.011553"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:47:58.788387" level="INFO">Argument types are:
 &lt;class 'int'&gt;
 &lt;class 'str'&gt;</msg>
 <arg>${status_code}</arg>
-<arg>400</arg>
+<arg>200</arg>
 <doc>Fails if objects are unequal after converting them to integers.</doc>
-<status status="PASS" start="2026-04-20T17:35:35.476330" elapsed="0.000769"/>
+<status status="PASS" start="2026-04-26T20:47:58.787454" elapsed="0.001410"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.470439" elapsed="0.006781"/>
+<status status="PASS" start="2026-04-26T20:47:58.775043" elapsed="0.014072"/>
 </kw>
-<status status="PASS" start="2026-04-20T17:35:35.468215" elapsed="0.009257"/>
+<kw name="Attach UE With ID ${ue_id}" source_name="Attach UE With ID ${ue_id}">
+<kw name="Attach Ue" owner="EPCTests">
+<msg time="2026-04-26T20:47:58.803446" level="INFO">${response} = {'status': 'attached', 'ue_id': 1}</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<status status="PASS" start="2026-04-26T20:47:58.790252" elapsed="0.013763"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${response}[status]</arg>
+<arg>attached</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-04-26T20:47:58.804362" elapsed="0.000720"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:47:58.805912" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response}[ue_id]</arg>
+<arg>${ue_id}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:47:58.805357" elapsed="0.000831"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:58.789533" elapsed="0.016863"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:58.774187" elapsed="0.032500"/>
+</kw>
+<kw name="Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol tcp" source_name="Start Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol}">
+<kw name="Start Traffic" owner="EPCTests">
+<msg time="2026-04-26T20:47:58.808957" level="INFO">URL: http://localhost:8000/ues/1/bearers/9/traffic</msg>
+<msg time="2026-04-26T20:47:58.809215" level="INFO">Payload: {'protocol': 'tcp', 'Mbps': 10.0}</msg>
+<msg time="2026-04-26T20:47:58.824646" level="INFO">Status: 200</msg>
+<msg time="2026-04-26T20:47:58.825316" level="INFO">Response body: {"status":"traffic_started","ue_id":1,"bearer_id":9,"target_bps":10000000}</msg>
+<msg time="2026-04-26T20:47:58.825625" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<arg>${bearer_id}</arg>
+<arg>${protocol}</arg>
+<arg>mbps=${mbps}</arg>
+<status status="PASS" start="2026-04-26T20:47:58.808277" elapsed="0.017762"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:47:58.828252" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:47:58.826408" elapsed="0.002939"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:58.807515" elapsed="0.022170"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-04-26T20:48:00.831885" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-04-26T20:47:58.830496" elapsed="2.002473"/>
+</kw>
+<kw name="Verify Traffic Stats For UE 1 Bearer 9 Protocol Is tcp" source_name="Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Protocol Is ${protocol}">
+<kw name="Get Traffic Stats" owner="EPCTests">
+<msg time="2026-04-26T20:48:00.849886" level="INFO">${stats} = {'ue_id': 1, 'bearer_id': 9, 'protocol': 'tcp', 'target_bps': 10000000, 'tx_bps': 14822587, 'rx_bps': 14822587, 'duration': 2.0239381790161133}</msg>
+<var>${stats}</var>
+<arg>${ue_id}</arg>
+<arg>${bearer_id}</arg>
+<status status="PASS" start="2026-04-26T20:48:00.834682" elapsed="0.015722"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${stats}[protocol]</arg>
+<arg>${protocol}</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-04-26T20:48:00.852530" elapsed="0.003092"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:00.834253" elapsed="0.022651"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:47:58.769308" elapsed="2.088301"/>
 </test>
-<status status="PASS" start="2026-04-20T17:35:35.263903" elapsed="0.215856"/>
+<test id="s1-s1-s1-t6" name="ST06 - traffic stats target bps reflects requested speed" line="38">
+<kw name="Prepare Clean EPC With Attached UE 1" type="SETUP" source_name="Prepare Clean EPC With Attached UE ${ue_id}">
+<kw name="Reset EPC">
+<kw name="Reset Response" owner="EPCTests">
+<msg time="2026-04-26T20:48:00.892054" level="INFO">${status_code} = 200</msg>
+<var>${status_code}</var>
+<status status="PASS" start="2026-04-26T20:48:00.882791" elapsed="0.009525"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:00.893202" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:48:00.892612" elapsed="0.001094"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:00.882230" elapsed="0.011694"/>
+</kw>
+<kw name="Attach UE With ID ${ue_id}" source_name="Attach UE With ID ${ue_id}">
+<kw name="Attach Ue" owner="EPCTests">
+<msg time="2026-04-26T20:48:00.908922" level="INFO">${response} = {'status': 'attached', 'ue_id': 1}</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<status status="PASS" start="2026-04-26T20:48:00.895235" elapsed="0.013937"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${response}[status]</arg>
+<arg>attached</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-04-26T20:48:00.909473" elapsed="0.000919"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:00.911512" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response}[ue_id]</arg>
+<arg>${ue_id}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:48:00.910797" elapsed="0.001188"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:00.894284" elapsed="0.017940"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:00.881160" elapsed="0.031561"/>
+</kw>
+<kw name="Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp" source_name="Start Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol}">
+<kw name="Start Traffic" owner="EPCTests">
+<msg time="2026-04-26T20:48:00.914827" level="INFO">URL: http://localhost:8000/ues/1/bearers/9/traffic</msg>
+<msg time="2026-04-26T20:48:00.915285" level="INFO">Payload: {'protocol': 'udp', 'Mbps': 10.0}</msg>
+<msg time="2026-04-26T20:48:00.927118" level="INFO">Status: 200</msg>
+<msg time="2026-04-26T20:48:00.927412" level="INFO">Response body: {"status":"traffic_started","ue_id":1,"bearer_id":9,"target_bps":10000000}</msg>
+<msg time="2026-04-26T20:48:00.927619" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<arg>${bearer_id}</arg>
+<arg>${protocol}</arg>
+<arg>mbps=${mbps}</arg>
+<status status="PASS" start="2026-04-26T20:48:00.914333" elapsed="0.013439"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:00.929836" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:48:00.927974" elapsed="0.002565"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:00.913600" elapsed="0.017493"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-04-26T20:48:02.933448" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-04-26T20:48:00.931974" elapsed="2.001835"/>
+</kw>
+<kw name="Verify Traffic Stats For UE 1 Bearer 9 Target Bps Matches 10 Mbps" source_name="Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Target Bps Matches ${mbps} Mbps">
+<kw name="Get Traffic Stats" owner="EPCTests">
+<msg time="2026-04-26T20:48:02.945737" level="INFO">${stats} = {'ue_id': 1, 'bearer_id': 9, 'protocol': 'udp', 'target_bps': 10000000, 'tx_bps': 9917843, 'rx_bps': 9917843, 'duration': 2.0165674686431885}</msg>
+<var>${stats}</var>
+<arg>${ue_id}</arg>
+<arg>${bearer_id}</arg>
+<status status="PASS" start="2026-04-26T20:48:02.935528" elapsed="0.010665"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-04-26T20:48:02.955156" level="INFO">${expected_bps} = 10000000</msg>
+<var>${expected_bps}</var>
+<arg>${mbps} * 1000000</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-04-26T20:48:02.948319" elapsed="0.012934"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<arg>${stats}[target_bps]</arg>
+<arg>${expected_bps}</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2026-04-26T20:48:02.965902" elapsed="0.002720"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:02.934842" elapsed="0.034426"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:00.868686" elapsed="2.101790"/>
+</test>
+<test id="s1-s1-s1-t7" name="ST07 - total rx bps in global stats reflects active traffic" line="44">
+<kw name="Prepare Clean EPC With Attached UE 1" type="SETUP" source_name="Prepare Clean EPC With Attached UE ${ue_id}">
+<kw name="Reset EPC">
+<kw name="Reset Response" owner="EPCTests">
+<msg time="2026-04-26T20:48:03.009863" level="INFO">${status_code} = 200</msg>
+<var>${status_code}</var>
+<status status="PASS" start="2026-04-26T20:48:02.992717" elapsed="0.017694"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:03.011391" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:48:03.010788" elapsed="0.001163"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:02.992336" elapsed="0.020088"/>
+</kw>
+<kw name="Attach UE With ID ${ue_id}" source_name="Attach UE With ID ${ue_id}">
+<kw name="Attach Ue" owner="EPCTests">
+<msg time="2026-04-26T20:48:03.028566" level="INFO">${response} = {'status': 'attached', 'ue_id': 1}</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<status status="PASS" start="2026-04-26T20:48:03.014752" elapsed="0.014130"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${response}[status]</arg>
+<arg>attached</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-04-26T20:48:03.029303" elapsed="0.001303"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:03.032020" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response}[ue_id]</arg>
+<arg>${ue_id}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:48:03.031006" elapsed="0.001761"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:03.013608" elapsed="0.019489"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:02.991771" elapsed="0.041942"/>
+</kw>
+<kw name="Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp" source_name="Start Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol}">
+<kw name="Start Traffic" owner="EPCTests">
+<msg time="2026-04-26T20:48:03.035419" level="INFO">URL: http://localhost:8000/ues/1/bearers/9/traffic</msg>
+<msg time="2026-04-26T20:48:03.035889" level="INFO">Payload: {'protocol': 'udp', 'Mbps': 10.0}</msg>
+<msg time="2026-04-26T20:48:03.048099" level="INFO">Status: 200</msg>
+<msg time="2026-04-26T20:48:03.048386" level="INFO">Response body: {"status":"traffic_started","ue_id":1,"bearer_id":9,"target_bps":10000000}</msg>
+<msg time="2026-04-26T20:48:03.048594" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<arg>${bearer_id}</arg>
+<arg>${protocol}</arg>
+<arg>mbps=${mbps}</arg>
+<status status="PASS" start="2026-04-26T20:48:03.034942" elapsed="0.013794"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:03.050539" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:48:03.048934" elapsed="0.002237"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:03.034336" elapsed="0.017449"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-04-26T20:48:05.056927" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-04-26T20:48:03.054309" elapsed="2.005767"/>
+</kw>
+<kw name="Verify Global Rx Traffic Is Active">
+<kw name="Get Global Stats" owner="EPCTests">
+<msg time="2026-04-26T20:48:05.092872" level="INFO">${stats} = {'scope': 'all', 'ue_count': 1, 'bearer_count': 1, 'total_tx_bps': 14720364, 'total_rx_bps': 14720364, 'details': None}</msg>
+<var>${stats}</var>
+<status status="PASS" start="2026-04-26T20:48:05.068331" elapsed="0.025187"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${stats}[total_rx_bps] &gt; 0</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-04-26T20:48:05.093820" elapsed="0.000693"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:05.065503" elapsed="0.029305"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:02.984442" elapsed="2.110733"/>
+</test>
+<test id="s1-s1-s1-t8" name="ST08 - bearer count decreases after stopping traffic" line="50">
+<kw name="Prepare Clean EPC With Attached UE 1" type="SETUP" source_name="Prepare Clean EPC With Attached UE ${ue_id}">
+<kw name="Reset EPC">
+<kw name="Reset Response" owner="EPCTests">
+<msg time="2026-04-26T20:48:05.115728" level="INFO">${status_code} = 200</msg>
+<var>${status_code}</var>
+<status status="PASS" start="2026-04-26T20:48:05.104701" elapsed="0.011254"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:05.116948" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:48:05.116260" elapsed="0.000902"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:05.104280" elapsed="0.013081"/>
+</kw>
+<kw name="Attach UE With ID ${ue_id}" source_name="Attach UE With ID ${ue_id}">
+<kw name="Attach Ue" owner="EPCTests">
+<msg time="2026-04-26T20:48:05.129466" level="INFO">${response} = {'status': 'attached', 'ue_id': 1}</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<status status="PASS" start="2026-04-26T20:48:05.118510" elapsed="0.011359"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${response}[status]</arg>
+<arg>attached</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-04-26T20:48:05.130187" elapsed="0.000614"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:05.131641" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response}[ue_id]</arg>
+<arg>${ue_id}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:48:05.131123" elapsed="0.000796"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:05.117787" elapsed="0.014313"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:05.103553" elapsed="0.028786"/>
+</kw>
+<kw name="Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp" source_name="Start Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol}">
+<kw name="Start Traffic" owner="EPCTests">
+<msg time="2026-04-26T20:48:05.134151" level="INFO">URL: http://localhost:8000/ues/1/bearers/9/traffic</msg>
+<msg time="2026-04-26T20:48:05.134394" level="INFO">Payload: {'protocol': 'udp', 'Mbps': 10.0}</msg>
+<msg time="2026-04-26T20:48:05.147027" level="INFO">Status: 200</msg>
+<msg time="2026-04-26T20:48:05.147446" level="INFO">Response body: {"status":"traffic_started","ue_id":1,"bearer_id":9,"target_bps":10000000}</msg>
+<msg time="2026-04-26T20:48:05.147702" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<arg>${bearer_id}</arg>
+<arg>${protocol}</arg>
+<arg>mbps=${mbps}</arg>
+<status status="PASS" start="2026-04-26T20:48:05.133490" elapsed="0.014378"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:05.149060" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:48:05.148189" elapsed="0.001218"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:05.132915" elapsed="0.017139"/>
+</kw>
+<kw name="Verify Global Bearer Count Is 1" source_name="Verify Global Bearer Count Is ${count}">
+<kw name="Get Global Stats" owner="EPCTests">
+<msg time="2026-04-26T20:48:05.159286" level="INFO">${stats} = {'scope': 'all', 'ue_count': 1, 'bearer_count': 1, 'total_tx_bps': 621295530, 'total_rx_bps': 621295530, 'details': None}</msg>
+<var>${stats}</var>
+<status status="PASS" start="2026-04-26T20:48:05.151714" elapsed="0.007818"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:05.160870" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${stats}[bearer_count]</arg>
+<arg>${count}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:48:05.159830" elapsed="0.001802"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:05.151117" elapsed="0.010773"/>
+</kw>
+<kw name="Stop Traffic On UE 1 Bearer 9" source_name="Stop Traffic On UE ${ue_id} Bearer ${bearer_id}">
+<kw name="Stop Traffic" owner="EPCTests">
+<msg time="2026-04-26T20:48:05.172499" level="INFO">${response} = {'status': 'traffic_stopped', 'ue_id': 1, 'bearer_id': 9}</msg>
+<var>${response}</var>
+<arg>${ue_id}</arg>
+<arg>${bearer_id}</arg>
+<status status="PASS" start="2026-04-26T20:48:05.163014" elapsed="0.009872"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${response}[status]</arg>
+<arg>traffic_stopped</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-04-26T20:48:05.173545" elapsed="0.000737"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:05.162418" elapsed="0.012070"/>
+</kw>
+<kw name="Verify Global Bearer Count Is 0" source_name="Verify Global Bearer Count Is ${count}">
+<kw name="Get Global Stats" owner="EPCTests">
+<msg time="2026-04-26T20:48:05.183056" level="INFO">${stats} = {'scope': 'all', 'ue_count': 1, 'bearer_count': 1, 'total_tx_bps': 2315631866, 'total_rx_bps': 2315631866, 'details': None}</msg>
+<var>${stats}</var>
+<status status="PASS" start="2026-04-26T20:48:05.175427" elapsed="0.008049"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:05.184525" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<msg time="2026-04-26T20:48:05.184838" level="FAIL">1 != 0</msg>
+<arg>${stats}[bearer_count]</arg>
+<arg>${count}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="FAIL" start="2026-04-26T20:48:05.183776" elapsed="0.009713">1 != 0</status>
+</kw>
+<status status="FAIL" start="2026-04-26T20:48:05.174917" elapsed="0.019117">1 != 0</status>
+</kw>
+<status status="FAIL" start="2026-04-26T20:48:05.099804" elapsed="0.094718">1 != 0</status>
+</test>
+<kw name="Reset EPC" type="TEARDOWN">
+<kw name="Reset Response" owner="EPCTests">
+<msg time="2026-04-26T20:48:05.216776" level="INFO">${status_code} = 200</msg>
+<var>${status_code}</var>
+<status status="PASS" start="2026-04-26T20:48:05.207155" elapsed="0.010036"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-04-26T20:48:05.218449" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-04-26T20:48:05.217529" elapsed="0.001154"/>
+</kw>
+<status status="PASS" start="2026-04-26T20:48:05.206539" elapsed="0.012355"/>
+</kw>
+<status status="FAIL" start="2026-04-26T20:47:52.404887" elapsed="12.814090"/>
 </suite>
-<status status="PASS" start="2026-04-20T17:35:35.261274" elapsed="0.220627"/>
+<status status="FAIL" start="2026-04-26T20:47:52.401600" elapsed="12.823862"/>
 </suite>
-<status status="PASS" start="2026-04-20T17:35:35.232454" elapsed="0.251685"/>
+<status status="FAIL" start="2026-04-26T20:47:52.374208" elapsed="12.858257"/>
 </suite>
 <statistics>
 <total>
-<stat pass="7" fail="0" skip="0">All Tests</stat>
+<stat pass="7" fail="1" skip="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat name="Epc-Simulator-Tests" id="s1" pass="7" fail="0" skip="0">Epc-Simulator-Tests</stat>
-<stat name="Tests" id="s1-s1" pass="7" fail="0" skip="0">Epc-Simulator-Tests.Tests</stat>
-<stat name="Bearer Validation" id="s1-s1-s1" pass="7" fail="0" skip="0">Epc-Simulator-Tests.Tests.Bearer Validation</stat>
+<stat name="Epc-Simulator-Tests" id="s1" pass="7" fail="1" skip="0">Epc-Simulator-Tests</stat>
+<stat name="Tests" id="s1-s1" pass="7" fail="1" skip="0">Epc-Simulator-Tests.Tests</stat>
+<stat name="Ue Stats" id="s1-s1-s1" pass="7" fail="1" skip="0">Epc-Simulator-Tests.Tests.Ue Stats</stat>
 </suite>
 </statistics>
 <errors>
