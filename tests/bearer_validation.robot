@@ -1,5 +1,6 @@
 *** Settings ***
 Library    ../EPCTests.py
+Resource   ../common.robot
 
 Suite Teardown    Reset EPC
 
@@ -85,23 +86,6 @@ BV13 - adding all bearers from 1 to 8 is accepted and all appear on UE
     Verify If UE 1 Has Bearer 8 Attached
 
 *** Keywords ***
-Reset EPC
-    ${status_code}=    Reset Response
-    Should Be Equal As Integers    ${status_code}    200
-
-Attach UE With ID ${ue_id}
-    ${response}=    Attach UE    ${ue_id}
-    Should Be Equal    ${response}[status]    attached
-    Should Be Equal As Integers    ${response}[ue_id]    ${ue_id}
-
-Prepare Clean EPC With Attached UE ${ue_id}
-    Reset EPC
-    Attach UE With ID ${ue_id}
-
-Add Bearer ${bearer_id} To UE ${ue_id}
-    ${response}=    Add Bearer    ${ue_id}    ${bearer_id}
-    Should Be Equal As Integers    ${response}[bearer_id]    ${bearer_id}
-
 Add Bearer ${bearer_id} To UE ${ue_id} Without Raise
     ${status_code}=    Add Bearer Without Raise    ${ue_id}    ${bearer_id}
     RETURN    ${status_code}
