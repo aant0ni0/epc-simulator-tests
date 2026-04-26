@@ -42,6 +42,13 @@ ST06 - traffic stats target bps reflects requested speed
     ${expected_bps}=    Evaluate    10 * 1000000
     Verify Traffic Stats For UE 1 Bearer 9 Target Bps Is ${expected_bps}
 
+ST07 - bearer count decreases after stopping traffic
+    Add Bearer 1 To UE 1
+    Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp
+    Verify Global Bearer Count Is 1
+    Stop Traffic On UE 1 Bearer 9
+    Verify Global Bearer Count Is 0
+
 *** Keywords ***
 Prepare Clean EPC With Attached UE ${ue_id}
     Reset EPC
@@ -63,6 +70,9 @@ Add Bearer ${bearer_id} To UE ${ue_id}
 Start Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol}
     ${response}=    Start Traffic    ${ue_id}    ${bearer_id}    ${protocol}    mbps=${mbps}
     Should Be Equal As Integers    ${response.status_code}    200
+
+Stop Traffic On UE ${ue_id} Bearer ${bearer_id}
+    Stop Traffic    ${ue_id}    ${bearer_id}
 
 Verify Global UE Count Is ${count}
     ${stats}=    Get Global Stats
