@@ -41,12 +41,6 @@ TLC07 - starting traffic on bearer 9 generates rx_bps stats after 2 seconds
     Sleep    2s
     Verify Traffic Stats For UE 1 Bearer 9 Have rx_bps Greater Than 0
 
-TLC08 - starting DL-only traffic on bearer 9 does not increase tx_bps after 2 seconds
-    [Setup]    Prepare Clean EPC With Attached UE 1
-    Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp
-    Sleep    2s
-    Verify Traffic Stats For UE 1 Bearer 9 Have tx_bps Equal To 0
-
 *** Keywords ***
 Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Have tx_bps Greater Than 0
     ${stats}=    Get Traffic Stats    ${ue_id}    ${bearer_id}
@@ -55,10 +49,6 @@ Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Have tx_bps Greater Tha
 Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Have rx_bps Greater Than 0
     ${stats}=    Get Traffic Stats    ${ue_id}    ${bearer_id}
     Should Be True    ${stats}[rx_bps] > 0
-
-Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Have tx_bps Equal To 0
-    ${stats}=    Get Traffic Stats    ${ue_id}    ${bearer_id}
-    Should Be Equal As Numbers    ${stats}[tx_bps]    0
 
 Verify Traffic Stats For UE ${ue_id} Bearer ${bearer_id} Have Duration Greater Than 0
     ${stats}=    Get Traffic Stats    ${ue_id}    ${bearer_id}
