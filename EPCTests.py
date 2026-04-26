@@ -119,36 +119,3 @@ class EPCTests:
         response.raise_for_status()
         return response.json()
 
-    def wait_until_traffic_stabilizes(
-            self,
-            ue_id: int,
-            expected_bps: float,
-            margin_percent: float = 15.0,
-            required_stable: int = 3,
-            interval: float = 1.0,
-            timeout: float = 30.0
-    ) -> float:
-        lower = expected_bps * (1 - margin_percent / 100)
-        upper = expected_bps * (1 + margin_percent / 100)
-        stable_count = 0
-        elapsed = 0.0
-
-        while elapsed < timeout:
-            stats = self.get_ues_stats(ue_id)
-            actual_bps = stats["total_rx_bps"]
-
-            if lower <= actual_bps <= upper:
-                stable_count += 1
-                if stable_count >= required_stable:
-                    return actual_bps
-            else:
-                stable_count = 0
-
-            time.sleep(interval)
-            elapsed += interval
-
-        raise AssertionError(
-            f"Transfer nie ustabilizował się w ciągu {timeout}s. "
-            f"Ostatni odczyt: {actual_bps} bps, "
-            f"oczekiwany przedział: {lower:.0f} - {upper:.0f} bps"
-        )
