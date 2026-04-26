@@ -1,5 +1,5 @@
 *** Settings ***
-Library           ../EPCTests.py
+Resource   ../common.robot
 
 Suite Teardown    Reset EPC
 
@@ -47,15 +47,6 @@ UL09 - attached UE appears in all UEs list
     Verify UE 5 Is In All UEs List
 
 *** Keywords ***
-Reset EPC
-    ${status_code}=    Reset Response
-    Should Be Equal As Integers    ${status_code}    200
-
-Attach UE With ID ${ue_id}
-    ${response}=    Attach UE    ${ue_id}
-    Should Be Equal    ${response}[status]    attached
-    Should Be Equal As Integers    ${response}[ue_id]    ${ue_id}
-
 Detach UE With ID ${ue_id}
     ${response}=    Detach UE    ${ue_id}
     Should Be Equal    ${response}[status]    detached

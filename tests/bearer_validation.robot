@@ -1,5 +1,4 @@
 *** Settings ***
-Library    ../EPCTests.py
 Resource   ../common.robot
 
 Suite Teardown    Reset EPC
@@ -7,12 +6,12 @@ Suite Teardown    Reset EPC
 *** Test Cases ***
 BV01 - default bearer 9 exists after attaching UE
     [Setup]    Prepare Clean EPC With Attached UE 1
-    Verify If UE 1 Has Bearer 9 Attached
+    Verify If UE 1 Has Bearer 9 Added
 
 BV02 - adding bearer with valid ID 1 is accepted and bearer appears on UE
     [Setup]    Prepare Clean EPC With Attached UE 1
     Add Bearer 1 To UE 1
-    Verify If UE 1 Has Bearer 1 Attached
+    Verify If UE 1 Has Bearer 1 Added
 
 BV03 - adding bearer with ID 10 which is above maximum range is rejected with status 422
     [Setup]    Prepare Clean EPC With Attached UE 1
@@ -38,7 +37,7 @@ BV07 - deleting existing bearer with ID 1 is accepted
     [Setup]    Prepare Clean EPC With Attached UE 1
     Add Bearer 1 To UE 1
     Delete Bearer 1 From UE 1
-    Verify If UE 1 Has Bearer 1 Not Attached
+    Verify If UE 1 Has Bearer 1 Not Added
 
 BV08 - deleting bearer that does not exist is rejected with status 400
     [Setup]    Prepare Clean EPC With Attached UE 1
@@ -76,31 +75,31 @@ BV13 - adding all bearers from 1 to 8 is accepted and all appear on UE
     Add Bearer 6 To UE 1
     Add Bearer 7 To UE 1
     Add Bearer 8 To UE 1
-    Verify If UE 1 Has Bearer 1 Attached
-    Verify If UE 1 Has Bearer 2 Attached
-    Verify If UE 1 Has Bearer 3 Attached
-    Verify If UE 1 Has Bearer 4 Attached
-    Verify If UE 1 Has Bearer 5 Attached
-    Verify If UE 1 Has Bearer 6 Attached
-    Verify If UE 1 Has Bearer 7 Attached
-    Verify If UE 1 Has Bearer 8 Attached
+    Verify If UE 1 Has Bearer 1 Added
+    Verify If UE 1 Has Bearer 2 Added
+    Verify If UE 1 Has Bearer 3 Added
+    Verify If UE 1 Has Bearer 4 Added
+    Verify If UE 1 Has Bearer 5 Added
+    Verify If UE 1 Has Bearer 6 Added
+    Verify If UE 1 Has Bearer 7 Added
+    Verify If UE 1 Has Bearer 8 Added
 
 *** Keywords ***
 Add Bearer ${bearer_id} To UE ${ue_id} Without Raise
     ${status_code}=    Add Bearer Without Raise    ${ue_id}    ${bearer_id}
     RETURN    ${status_code}
 
-Verify If UE ${ue_id} Has Bearer ${bearer_id} Attached
-    ${ue}=    Get UE    ${ue_id}
-    Should Contain    ${ue}[bearers]    ${bearer_id}
-
-Verify If UE ${ue_id} Has Bearer ${bearer_id} Not Attached
-    ${ue}=    Get UE    ${ue_id}
-    Should Not Contain    ${ue}[bearers]    ${bearer_id}
-
 Delete Bearer ${bearer_id} From UE ${ue_id}
     ${status_code}=    Delete Bearer    ${ue_id}    ${bearer_id}
     RETURN   ${status_code}
+
+Verify If UE ${ue_id} Has Bearer ${bearer_id} Added
+    ${ue}=    Get UE    ${ue_id}
+    Should Contain    ${ue}[bearers]    ${bearer_id}
+
+Verify If UE ${ue_id} Has Bearer ${bearer_id} Not Added
+    ${ue}=    Get UE    ${ue_id}
+    Should Not Contain    ${ue}[bearers]    ${bearer_id}
 
 Verify If ${actual_status_code} Is ${expected_status_code}
     Should Be Equal As Integers    ${actual_status_code}    ${expected_status_code}

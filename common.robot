@@ -22,7 +22,3 @@ Add Bearer ${bearer_id} To UE ${ue_id}
 Start Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol}
     ${response}=    Start Traffic    ${ue_id}    ${bearer_id}    ${protocol}    mbps=${mbps}
     Should Be Equal As Integers    ${response.status_code}    200
-
-Verify If Starting Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol} Is Rejected
-    ${response}=    Start Traffic    ${ue_id}    ${bearer_id}    ${protocol}    mbps=${mbps}
-    Should Be Equal As Integers    ${response.status_code}    400
