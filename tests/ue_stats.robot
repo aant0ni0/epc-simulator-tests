@@ -47,6 +47,14 @@ ST07 - total rx bps in global stats reflects active traffic
     Sleep    2s
     Verify Global Rx Traffic Is Active
 
+ST08 - bearer count decreases after stopping traffic
+    [Setup]    Prepare Clean EPC With Attached UE 1
+    Start Traffic On UE 1 Bearer 9 With 10 Mbps Protocol udp
+    Verify Global Bearer Count Is 1
+    Stop Traffic On UE 1 Bearer 9
+    Verify Global Bearer Count Is 0
+
+
 *** Keywords ***
 Prepare Clean EPC With Attached UE ${ue_id}
     Reset EPC
@@ -68,6 +76,10 @@ Add Bearer ${bearer_id} To UE ${ue_id}
 Start Traffic On UE ${ue_id} Bearer ${bearer_id} With ${mbps} Mbps Protocol ${protocol}
     ${response}=    Start Traffic    ${ue_id}    ${bearer_id}    ${protocol}    mbps=${mbps}
     Should Be Equal As Integers    ${response.status_code}    200
+
+Stop Traffic On UE ${ue_id} Bearer ${bearer_id}
+    ${response}=    Stop Traffic    ${ue_id}    ${bearer_id}
+    Should Be Equal    ${response}[status]    traffic_stopped
 
 Verify Global UE Count Is ${count}
     ${stats}=    Get Global Stats
