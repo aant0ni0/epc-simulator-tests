@@ -1,5 +1,5 @@
 *** Settings ***
-Library    EPCTests.py
+Library    ${CURDIR}/EPCTests.py
 
 *** Keywords ***
 Reset EPC
